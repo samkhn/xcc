@@ -1,0 +1,49 @@
+C++2020 Survey Notes
+
+An important resource to parse is Anthony Calandra's Github: https://github.com/AnthonyCalandra/modern-cpp-features
+
+* static
+
+Multiple uses for static variables but generally means the variable will be in exactly the same place in memory all the time (static region of compiled image).
+
+Within namespace: variable is accessible by anything within that translation unit.
+
+Within function scope: The keyword static acts to extend the lifetime of a variable to the lifetime of the program. Initialization occurs once and once only and then the variable retains its value - whatever it has come to be - over all future calls to foo().
+
+Within class: Makes class member variables accessible without instance of class.
+static function, not useful outside class but it makes a class function runnable without instance of a class.
+
+* lambdas
+
+[](){}
+[] -> capture list, variables copied inside lamda for use inside code section
+() -> argument list
+{} -> code/instructions
+
+Think of lambdas like classes...
+- capture list are private data
+- when lambda is constructed, constructor copies captured variables inside
+- has an operator()(...) where args are passed in place of ...
+- has scope lifetime
+- data gets destroyed which frees members
+
+You can specify default captures
+- capture all vars inside by reference: [&](){i = 0; j = 0;}
+- capture all vars inside by value: [=](){cout << k;}
+- mix and match possible
+  ex: [&, i, j] captures all vars by reference except for i j which are captured by value
+
+If not passed by reference, captures cannot by default be modified. to change this, make the lambda mutable
+ex: [i](){i=1;} illegal but [i]()mutable{i=1;} legal
+
+lambdas != std::function, lambda can be assigned to std::function objects though
+lambdas dont have a type so you have to use auto
+if capture list empty it can be assigned to a C functor
+
+* functors?
+
+-- STL --
+
+* iostream
+Use ios_base::sync_with_stdio(false); and cin.tie(NULL); to increase iostream speed
+
