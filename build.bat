@@ -16,6 +16,8 @@ REM cl %DEBUGOPTS% %PROJECTDIR%\storage-duration.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\lambdas.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\functions-as-objects.cpp
 
+cl %DEBUGOPTS% %PROJECTDIR%\metaprogramming\primer.cpp
+
 REM cl %DEBUGOPTS% %PROJECTDIR%\explicit.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\rule-of-zero.cpp
 
