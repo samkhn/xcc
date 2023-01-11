@@ -14,7 +14,7 @@ SET DEBUGOPTS=/std:c++17 /DEBUG /MT /EHsc
 REM cl %DEBUGOPTS% %PROJECTDIR%\object-pointer-cmp.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\storage-duration.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\lambdas.cpp
-cl %DEBUGOPTS% %PROJECTDIR%\functions-as-objects.cpp
+REM cl %DEBUGOPTS% %PROJECTDIR%\functions-as-objects.cpp
 
 REM cl %DEBUGOPTS% %PROJECTDIR%\explicit.cpp
 REM cl %DEBUGOPTS% %PROJECTDIR%\rule-of-zero.cpp
