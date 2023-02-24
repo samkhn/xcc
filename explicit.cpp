@@ -1,19 +1,17 @@
 #include <iostream>
 
-class Foo
-{
-private:
-    int member_;
-public:
-    // Foo( int member ) : member_ ( member ) {}
-    explicit Foo( int member ) : member_ ( member ) {}
+class Foo {
+ private:
+  int member_;
+ public:
+  Foo( int member ) : member_ ( member ) {}
+  // explicit Foo( int member ) : member_ ( member ) {}
 
-    int GetMember() const { return member_; }
+  int GetMember() const { return member_; }
 };
 
-void DoBar( Foo foo )
-{
-    int i = foo.GetMember();
+void DoBar( Foo foo ) {
+  int i = foo.GetMember();
 }
 
 int main()
