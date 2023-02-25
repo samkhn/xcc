@@ -17,3 +17,7 @@ add_executable(string-view string-view.cpp)
 add_executable(typecasting typecasting.cpp)
 add_executable(variant variant.cpp)
 add_executable(vtable vtable.cpp)
+
+# The actually cool section: metaprogramming!
+add_executable(primer metaprogramming/primer.cpp)
+add_executable(variadic metaprogramming/variadic.cpp)
