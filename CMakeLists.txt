@@ -5,6 +5,7 @@ project(xcc
 	DESCRIPTION "Experiments with the C++ language/compiler"
 	LANGUAGES CXX)
 
+add_executable(crtp crtp.cpp)
 add_executable(endian endian.cpp)
 add_executable(explicit explicit.cpp)
 add_executable(fake-cmdline fake-cmdline.cpp)
