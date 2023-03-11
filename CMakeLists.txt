@@ -8,24 +8,36 @@ project(xcc
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable (algorithm src/algorithm.cpp)
-add_executable (crtp src/crtp.cpp)
-add_executable (endian src/endian.cpp)
-add_executable (explicit src/explicit.cpp)
-add_executable (fake-cmdline src/fake-cmdline.cpp)
-add_executable (friend src/friend.cpp)
-add_executable (functors src/functors.cpp)
-add_executable (io src/io.cpp)
-add_executable (lambdas src/lambdas.cpp)
-add_executable (numeric src/numeric.cpp)
-add_executable (object-pointer-cmp src/object-pointer-cmp.cpp)
-add_executable (rng src/rng.cpp)
-add_executable (storage-duration src/storage-duration.cpp)
-add_executable (string-view src/string-view.cpp)
-add_executable (typecasting src/typecasting.cpp)
-add_executable (variant src/variant.cpp)
-add_executable (vtable src/vtable.cpp)
+# Language runtime and abstract machine
+add_executable (endian src/rt/endian.cc)
+add_executable (object-pointer-cmp src/rt/object-pointer-cmp.cc)
 
-# The actually cool section: metaprogramming!
-add_executable (primer src/metaprogramming/primer.cpp)
-add_executable (variadic src/metaprogramming/variadic.cpp)
+# Standard libraries
+add_executable (algorithm src/stl/algorithm.cc)
+add_executable (input_test src/stl/input_test.cc)
+add_executable (io src/stl/io.cc)
+add_executable (numeric src/stl/numeric.cc)
+add_executable (rng src/stl/rng.cc)
+add_executable (string-view src/stl/string-view.cc)
+
+# Generative programming
+add_executable (crtp src/meta/crtp.cc)
+add_executable (primer src/meta/primer.cc)
+add_executable (variadic src/meta/variadic.cc)
+
+# Scopes
+add_executable (storage-duration src/scope/storage-duration.cc)
+
+# Higher order functions and functional programming patterns
+add_executable (closure src/func/closure.cc)
+add_executable (functors src/func/functors.cc)
+add_executable (lambdas src/func/lambdas.cc)
+# TODO: Continuation and Monads add_executable (continuation src/func/continuation.cc)
+
+# Dynamic dispatch and (sub)typing
+add_executable (explicit src/types/explicit.cc)
+add_executable (variant src/types/variant.cc)
+add_executable (friend src/types/friend.cc)
+add_executable (typecasting src/types/typecasting.cc)
+add_executable (vtable src/types/vtable.cc)
+# don't compile but use as example: src/types/rule-of-zero.cc
