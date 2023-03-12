@@ -22,6 +22,9 @@ add_executable (string-view src/stl/string-view.cc)
 
 # Generative programming
 add_executable (crtp src/meta/crtp.cc)
+# TODO: https://devblogs.microsoft.com/cppblog/cpp23-deducing-this/
+# you can implement CRTP by deducing the this parameter.
+# Deducing this gives a new way to specify non-static member funcs
 add_executable (primer src/meta/primer.cc)
 add_executable (variadic src/meta/variadic.cc)
 
@@ -32,7 +35,7 @@ add_executable (storage-duration src/scope/storage-duration.cc)
 add_executable (closure src/func/closure.cc)
 add_executable (functors src/func/functors.cc)
 add_executable (lambdas src/func/lambdas.cc)
-# TODO: Continuation and Monads add_executable (continuation src/func/continuation.cc)
+add_executable (continuation src/func/continuation.cc)
 
 # Dynamic dispatch and (sub)typing
 add_executable (explicit src/types/explicit.cc)
