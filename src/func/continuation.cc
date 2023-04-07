@@ -20,27 +20,24 @@
 #include <thread>
 #include <vector>
 
-
 // An example of a Maybe Monad
 std::optional<int> getFirst(const std::vector<int>& v) {
-  if (v.empty())
-    return std::optional<int>();
+  if (v.empty()) return std::optional<int>();
   return std::optional<int>(v[0]);
 }
-
 
 // Say you have some asynchronous API e.g. file API where the underlying
 // hardware sends disk I/O. Instead of sending a blocking call, you can compose
 // a series of asynchronous API calls.
-void asyncAPI(std::function<void(std::string)> handler) {
+void asyncAPI(std::function<void(std::string&)> handler) {
   std::thread t([handler]() {
     std::cout << "Started async\n";
     std::this_thread::sleep_for(std::chrono::seconds(3));
-    handler("result");
+    std::string r = "result";
+    handler(r);
   });
   t.detach();
 }
-
 
 // Continuator is an example of a Continuation monad
 // Continuators are values that have not materialized yet.
@@ -56,9 +53,7 @@ struct Continuator {
 
 struct AsyncAPI : Continuator<void, std::string> {
   // continuation, k, is the handler for the async API
-  void andThen(std::function<void(std::string)> k) {
-    asyncAPI(k);
-  }
+  void andThen(std::function<void(std::string&)> k) { asyncAPI(k); }
   std::string s_;
 };
 
@@ -69,9 +64,7 @@ struct AsyncAPI : Continuator<void, std::string> {
 template <typename R, typename A>
 struct Return : Continuator<R, A> {
   Return(A a) : a_(a) {}
-  R andThen(std::function<R(A)> k) {
-    return k(a_);
-  }
+  R andThen(std::function<R(A)> k) { return k(a_); }
   A a_;
 };
 
@@ -80,22 +73,20 @@ struct Return : Continuator<R, A> {
 // Bind allows you to pass the result of a computation to another computation
 // after e.g. after an asynch file open(), you would want to pass the
 // Continuator that wraps the file handler to an async read(file_chunk).
-// 
+//
 // Bind composes an arbitrary continuator called ctor with a continuator for
 // the rest of the computation.
 template <typename R, typename A, typename C>
 struct Bind : Continuator<R, A> {
-  Bind(C& first, std::function<std::unique_ptr<Continuator>(A)> second)
+  Bind(C&& first, std::function<std::unique_ptr<Continuator<R, A>>(A)> second)
       : first_(first), second_(second) {}
   void andThen(std::function<R(A)> k) {
-    std::function<std::unique_ptr<Continuator>(A)> second = second_;
-    std::function<R(A)> f = [k, second](A a) {
-      return second(a)->andThen(k);
-    };
+    std::function<std::unique_ptr<Continuator<R, A>>(A)> second = second_;
+    std::function<R(A)> f = [k, second](A a) { return second(a)->andThen(k); };
     first_.andThen(f);
   }
   C first_;
-  std::function<std::unique_ptr<Continuator>(A)> second_;
+  std::function<std::unique_ptr<Continuator<R, A>>(A)> second_;
 };
 
 // NOTE: Loop is untested because it infinitely loops
@@ -104,7 +95,7 @@ struct Loop : Continuator<void, std::string> {
   void andThen(std::function<void(std::string)> k) {
     std::cout << "Loop::andThen: " << s_ << "\n";
     Bind<void, std::string, AsyncAPI>(AsyncAPI(), [](std::string t) {
-      return std::unique_ptr<Continuator> (new Loop(t));
+      return std::unique_ptr<Continuator>(new Loop(t));
     }).andThen(k);
   }
   std::string s_;
@@ -117,14 +108,16 @@ struct LoopN : Continuator<void, std::string> {
     std::cout << "[LoopN::andThen] " << s_ << " " << n_ << "\n";
     int n = n_;
     Bind<void, std::string, AsyncAPI>(
-        AsyncAPI(), [n](std::string s) -> std::unique_ptr<Continuator> {
+        AsyncAPI(),
+        [n](std::string s) -> std::unique_ptr<Continuator> {
           if (n > 0) {
-            return std::unique_ptr<Continuator>(new LoopN(s, n-1));
+            return std::unique_ptr<Continuator>(new LoopN(s, n - 1));
           } else {
             return std::unique_ptr<Continuator>(
                 new Return<void, std::string>("Done!"));
           }
-        }).andThen(k);
+        })
+        .andThen(k);
   }
   std::string s_;
   int n_;
@@ -161,7 +154,6 @@ struct Combinator : Continuator<void, std::string> {
   std::unique_ptr<Continuator<void, std::string>> b_;
 };
 
-
 int main() {
   std::vector<int> a{1, 2, 3};
   std::vector<int> b;
@@ -170,8 +162,8 @@ int main() {
   if (an_integer) {
     std::cout << "*an_integer: " << *an_integer << '\n';
     std::cout << "an_integer.value(): " << an_integer.value() << '\n';
-    std::cout << "an_integer.value_or(2017): "
-              << an_integer.value_or(2017) << '\n';
+    std::cout << "an_integer.value_or(2017): " << an_integer.value_or(2017)
+              << '\n';
   }
   std::cout << '\n';
 
@@ -182,9 +174,8 @@ int main() {
   }
 
   AsyncAPI dial;
-  dial.andThen([](std::string &s) {
-    std::cout << s << '\n';
-  });
+  dial.andThen(
+      std::function([](std::string& s) -> void { std::cout << s << '\n'; }));
 
   LoopN("Begin ", 3).andThen([](std::string s) {
     std::cout << "Finally " << s << "\n";

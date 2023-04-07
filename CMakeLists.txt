@@ -9,6 +9,7 @@ set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Language runtime and abstract machine
+add_executable (defer src/lang/defer.cc)
 add_executable (endian src/rt/endian.cc)
 add_executable (object-pointer-cmp src/rt/object-pointer-cmp.cc)
 
@@ -16,9 +17,13 @@ add_executable (object-pointer-cmp src/rt/object-pointer-cmp.cc)
 add_executable (algorithm src/stl/algorithm.cc)
 add_executable (input_test src/stl/input_test.cc)
 add_executable (io src/stl/io.cc)
+add_executable (map src/stl/map.cc)
 add_executable (numeric src/stl/numeric.cc)
 add_executable (rng src/stl/rng.cc)
 add_executable (string-view src/stl/string-view.cc)
+
+# Threads and concurrency
+add_executable (lock_free_stack src/concurrency/lock_free_stack.cc)
 
 # Generative programming
 add_executable (crtp src/meta/crtp.cc)

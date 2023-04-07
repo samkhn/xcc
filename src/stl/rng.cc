@@ -1,5 +1,6 @@
 // Random number generation
 
+#include <algorithm>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
