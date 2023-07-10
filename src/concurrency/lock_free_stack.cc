@@ -27,7 +27,7 @@ class Stack {
 
   void Pop() {
     Node<T>* del = head_.load(std::memory_order_relaxed);
-    while (!head_.compare_exchange_weak(head_, head_->next,
+    while (!head_.compare_exchange_weak(del, del->next_,
                                         std::memory_order_release,
                                         std::memory_order_relaxed))
       ;
