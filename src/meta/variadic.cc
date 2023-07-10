@@ -1,5 +1,6 @@
 // Variadic Templates
 
+#include <cstdint>
 #include <iostream>
 #include <string>
 

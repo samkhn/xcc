@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <iostream>
 
 // Variables store values for later calling
@@ -47,6 +48,6 @@ int main( )
 
     integral_ptr_t ConvertedPointer = reinterpret_cast<integral_ptr_t>(pointer);
     std::cout << "sizeof(integral_ptr_t) = " << sizeof(integral_ptr_t) << "\n";
-    
+
     return( 0 );
 }
