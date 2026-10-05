@@ -9,13 +9,14 @@
 #include <iostream>
 
 int main() {
-	std::ios_base::sync_with_stdio(false);
-	std::cin.tie(NULL);
-	int count, n, k, value = 0;
-	std::cin >> n >> k;
-	while (std::cin >> value) {
-		if (value % k == 0) count++;
-	}
-	std::cout << count;
-	return 0;
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+    int count, n, k, value = 0;
+    std::cin >> n >> k;
+    while (std::cin >> value) {
+        if (value % k == 0)
+            count++;
+    }
+    std::cout << count;
+    return 0;
 }

@@ -14,7 +14,7 @@
 // Note: a function or variable declared constexpr is implicitly inlined.
 // Note: a function that has been deleted is implicitly inlined (since its impl can appear in other translation units)
 // Note: Function-local static objects in all function definitions are shared across all translation units
-//   (they all refer to the same object defined in one translation unit) 
+//   (they all refer to the same object defined in one translation unit)
 //
 // Preprocessor guards prevent double #includes within the same translation unit.
 // One Definition Rule still applies within the same translation unit.
@@ -32,13 +32,12 @@ inline constexpr std::string_view kHelloWorld = "Hello World.";
 // Therefore, static undoes/negates inline. Static makes a variable private to its TU (file).
 
 // use: function included in multiple source files must be inline
-inline int sum( int a, int b )
-{
+inline int sum(int a, int b) {
     return a + b;
 }
 
 // use: variable with external linkage included in multiple source files must be inline
-inline std::atomic<int> counter( 0 );
+inline std::atomic<int> counter(0);
 
 // Check storage-duration.cpp for how this gets used.
 

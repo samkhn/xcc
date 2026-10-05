@@ -4,32 +4,27 @@
 
 #include <iostream>
 
-class Base
-{
-public:
+class Base {
+  public:
     int A;
     float B;
 
-    virtual void Foo()
-    {
+    virtual void Foo() {
         std::cout << "Base!\n";
     }
 };
 
-class Derived : public Base
-{
-public:
+class Derived: public Base {
+  public:
     int C;
     double D;
-    
-    virtual void Foo()
-    {
+
+    virtual void Foo() {
         std::cout << "Child!\n";
     }
 };
 
-int main()
-{
+int main() {
     Base first;
     Derived second;
 
@@ -39,10 +34,14 @@ int main()
     std::cout << "Base.A offset: " << (size_t)&first.A - (size_t)&first << "\n";
     std::cout << "Base.B offset: " << (size_t)&first.B - (size_t)&first << "\n";
 
-    std::cout << "Derived.A offset: " << (size_t)&second.A - (size_t)&second << "\n";
-    std::cout << "Derived.B offset: " << (size_t)&second.B - (size_t)&second << "\n";
-    std::cout << "Derived.C offset: " << (size_t)&second.C - (size_t)&second << "\n";
-    std::cout << "Derived.C offset: " << (size_t)&second.C - (size_t)&second << "\n";
-    
-    return( 0 );
+    std::cout << "Derived.A offset: " << (size_t)&second.A - (size_t)&second
+              << "\n";
+    std::cout << "Derived.B offset: " << (size_t)&second.B - (size_t)&second
+              << "\n";
+    std::cout << "Derived.C offset: " << (size_t)&second.C - (size_t)&second
+              << "\n";
+    std::cout << "Derived.C offset: " << (size_t)&second.C - (size_t)&second
+              << "\n";
+
+    return (0);
 }

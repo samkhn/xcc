@@ -8,10 +8,9 @@
 
 #include "inline.h"
 
-int a( )
-{
+int a() {
     ++counter;
-    return sum( 1, 2 );
+    return sum(1, 2);
 }
 
 // static has 3 meanings depending on where it's used
@@ -22,8 +21,7 @@ static int Foo = 42;
 
 // within local scopes, static changes a local variable from auto duration (destroy on block exit) to static.
 // Variable is created at start of program and destroyed at end. Initialized once.
-void IncrementAndPrint( )
-{
+void IncrementAndPrint() {
     static int value = 1;
     ++value;
     std::cout << "Static int value is now " << value << "\n";
@@ -32,12 +30,15 @@ void IncrementAndPrint( )
 
 // class member var: static declares members that are not bound to class instances
 // (use case is counting how many instances of that class exists).
-class Dummy
-{
-public:
+class Dummy {
+  public:
     static int n;
-    Dummy() { n++; }
-    ~Dummy() { n--; }
+    Dummy() {
+        n++;
+    }
+    ~Dummy() {
+        n--;
+    }
 };
 
 int Dummy::n = 0;
@@ -65,20 +66,18 @@ void H3(const int* const x);  // becomes H3(const int*)
 // mutable - permits modification of the class member declared mutable even if the containing object is declared const.
 // use case: mutexes. M&M (mutable mutex) is a common pattern, lazy evaluation
 // Used to specify that the member does not impact the externally visible state of the class.
-class ThreadSafeCounter
-{
+class ThreadSafeCounter {
     mutable std::mutex m_;
     int data_ = 0;
-public:
-    int get( ) const
-    {
-        std::lock_guard<std::mutex> lk( m_ );
+
+  public:
+    int get() const {
+        std::lock_guard<std::mutex> lk(m_);
         return data_;
     }
 
-    void inc( )
-    {
-        std::lock_guard<std::mutex> lk( m_ );
+    void inc() {
+        std::lock_guard<std::mutex> lk(m_);
         data_++;
     }
 };
@@ -91,28 +90,28 @@ public:
 // If used in object declaration, it just means const.
 // If used on a function, the value returned from executing a function can be used in constexpr.
 // From Google C++ style guide: Use constexpr to define true constants or to ensure constant initialization.
-template <typename T, size_t N>
-constexpr size_t SizeOf( T (&)[N] )
-{
+template<typename T, size_t N>
+constexpr size_t SizeOf(T (&)[N]) {
     return N;
 }
 // another demo. How to store pi?
 #define ONE 1;  // this is just a bad idea
 enum { TWO = 2 };  // works but isn't fully typed
 // enum { pi = 3.1415f } doesn't even compile
-static const float piold = 3.1415f;  // this is a file local lvalue pretending to be an rvalue. Might break depending on how statics are initialized.
-constexpr float pi = 3.1415f;  // nice. Note that constexpr const just becomes constexpr
+static const float piold =
+    3.1415f;  // this is a file local lvalue pretending to be an rvalue. Might break depending on how statics are initialized.
+constexpr float pi =
+    3.1415f;  // nice. Note that constexpr const just becomes constexpr
 
-int main()
-{
+int main() {
     // static local
     IncrementAndPrint();
     IncrementAndPrint();
-    
+
     // static inside class
     Dummy a;
     Dummy b[5];
-    Dummy *c = new Dummy;
+    Dummy* c = new Dummy;
     std::cout << "a.n = " << a.n << "\n";  // a.n = 7
     delete c;
     std::cout << "Dummy::n = " << Dummy::n << "\n";  // CDummy::n = 6
@@ -121,7 +120,7 @@ int main()
     int x[10];
     int y[SizeOf<int>(x)];  // happens at compile time
     // without constexpr: int y[sizeof(y)/sizeof(int)]
-    std::cout << "size of array y is: " << sizeof(y)/sizeof(int) << "\n";
-    
-    return( 0 );
+    std::cout << "size of array y is: " << sizeof(y) / sizeof(int) << "\n";
+
+    return (0);
 }

@@ -7,23 +7,22 @@
 using namespace std;
 
 class Base {};
-class Derived : public Base {};
+class Derived: public Base {};
 class Unrelated {};
 
-void constCastPrintDemo( char *message )
-{
+void constCastPrintDemo(char* message) {
     cout << message << "\n";
 }
 
-int main()
-{
+int main() {
     // Implicit conversion
     {
         short a = 1000;
         int b;
         b = a;
         cout << "Short with value: " << a << " is size " << sizeof(a)
-             << ", int has same value " << b << " and is size "<< sizeof(b) << "\n";
+             << ", int has same value " << b << " and is size " << sizeof(b)
+             << "\n";
     }
 
     // C-style explicit conversion
@@ -32,9 +31,10 @@ int main()
     {
         short c = 1000;
         int d;
-        d = (int) c;
+        d = (int)c;
         cout << "Short with value: " << c << " is size " << sizeof(c)
-             << ", int has same value " << d << " and is size "<< sizeof(d) << "\n";
+             << ", int has same value " << d << " and is size " << sizeof(d)
+             << "\n";
     }
 
     // There are four types of casting that comes with C++:
@@ -48,8 +48,8 @@ int main()
     }
     // Allows conversion of derived-to-base AND base-to-derive (the latter doesn't make sense physically but allows it)
     {
-        Base *b = new Base;
-        Derived *d = static_cast<Derived *>(b);
+        Base* b = new Base;
+        Derived* d = static_cast<Derived*>(b);
         // Following line does not compile: static_cast does not allow for conversions between unrelated types
         // Unrelated *r = static_cast<Unrelated *>(d);
         delete b;
@@ -58,16 +58,16 @@ int main()
     // reinterpret_cast allows conversion between pointers of unrelated types
     // Please only use this when necessary or if you know what you are doing (you probably don't)
     {
-        Base *b = new Base;
-        Unrelated *r = reinterpret_cast<Unrelated *>(b);
+        Base* b = new Base;
+        Unrelated* r = reinterpret_cast<Unrelated*>(b);
         delete b;
     }
-    
+
     // const_cast adds/remove const-ness
     {
-        const char *m = "This was a const char * passed to a char *\n";
+        const char* m = "This was a const char * passed to a char *\n";
         // constCastPrintDemo( m ); does not compile. Cannot convert arg1 from const char* to char*
-        constCastPrintDemo( const_cast<char *>( m ) );
+        constCastPrintDemo(const_cast<char*>(m));
     }
 
     // dynamic_cast can only be used for pointers or references to object.
@@ -76,9 +76,9 @@ int main()
     {
         Base b;
         Derived d;
-        Base *pb = dynamic_cast<Base *>(&d);  // Okay
+        Base* pb = dynamic_cast<Base*>(&d);  // Okay
         // Derived *pd = dynamic_cast<Derived *>(&b);  // Does not compile. 'Base' is not a polymorphic type.
     }
 
-    return( 0 );
+    return (0);
 }
